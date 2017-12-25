@@ -223,3 +223,15 @@
 }
 
 %end
+
+%hook DTInfoPlist
+
+- (NSString *)getAppBundleId{
+	return @"com.laiwang.DingTalk";
+}
+
+- (NSString *)getAppVersion{
+    return @"4.0.4";
+}
+
+%end
