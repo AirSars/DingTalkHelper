@@ -117,3 +117,19 @@
 - (void)locationManager:(id)arg1 didFailWithError:(id)arg2;
 
 @end
+
+@interface DTUmidManager : NSObject
++ (NSString *)encrypIsSimulatorString;
+@end 
+
+@interface SecurityGuardStaticDataEncrypt : NSObject
+
+- (id)staticSafeEncrypt:(long long)arg1 forKey:(id)arg2 forNeedProcessValue:(id)arg3;
+
+@end
+
+@interface SecurityGuardManager: NSObject
++ (id)getInstance;
+- (SecurityGuardStaticDataEncrypt *)getStaticDataEncryptComp;
+
+@end

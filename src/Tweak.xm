@@ -1,18 +1,10 @@
 #import "DingTalkHelper.h"
 #import "LLPunchConfig.h"
-#import "LLPunchManager.h"
-
-%hook LAWebViewContainer
-- (BOOL)pluginInstance:(id)arg1 jsapiShouldCall:(id)arg2{
-    //objc_msgSend(self,@selector(showText:y:),[NSString stringWithFormat:@"%s,%@",__FUNCTION__,arg2],200);
-    return %orig;
-}
-%end
+#import "LLPunchManager.h" 
 
 %hook DTWebViewController
 
 - (BOOL)pluginInstance:(id)arg1 jsapiShouldCall:(id)arg2{
-    //objc_msgSend(self,@selector(showText:y:),[NSString stringWithFormat:@"%s",__FUNCTION__],100);
     return YES;
 }
 
@@ -226,12 +218,8 @@
 
 %hook DTInfoPlist
 
-- (NSString *)getAppBundleId{
++ (NSString *)getAppBundleId{
 	return @"com.laiwang.DingTalk";
-}
-
-- (NSString *)getAppVersion{
-    return @"4.0.4";
 }
 
 %end
