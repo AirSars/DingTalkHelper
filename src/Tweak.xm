@@ -107,6 +107,18 @@
 - (void)tidyDataSource{
     NSMutableArray <DTSectionItem *> *sectionItems = [NSMutableArray array];
     
+    DTCellItem *configSelItem = [NSClassFromString(@"DTCellItem") cellItemForDefaultStyleWithIcon:nil title:@"选择历史配置" image:nil showIndicator:YES cellDidSelectedBlock:^{
+
+    }];
+
+    DTCellItem *aliasItem = [NSClassFromString(@"DTCellItem") cellItemForEditStyleWithTitle:@"配置别名：" textFieldHint:@"请输入配置别名：" textFieldLimt:NSIntegerMax textFieldHelpBtnNormalImage:nil textFieldHelpBtnHighLightImage:nil textFieldDidChangeEditingBlock:^(DTCellItem *item,DTCell *cell,UITextField *textField){
+
+    }];
+    aliasItem.textFieldText = @"";
+    DTSectionItem *aliasSectionItem = [NSClassFromString(@"DTSectionItem") itemWithSectionHeader:nil sectionFooter:nil];
+    aliasSectionItem.dataSource = @[configSelItem,aliasItem];
+    [sectionItems addObject:aliasSectionItem];
+
     DTCellItem *openPunchCellItem = [NSClassFromString(@"DTCellItem") cellItemForSwitcherStyleWithTitle:@"是否开启打卡助手" isSwitcherOn:self.punchConfig.isOpenPunchHelper switcherValueDidChangeBlock:^(DTCellItem *item,DTCell *cell,UISwitch *aSwitch){
         self.punchConfig.isOpenPunchHelper = aSwitch.on;
     }];
