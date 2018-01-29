@@ -9,7 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "LLPunchConfig.h"
 
+#define kArchiverFileDoc [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"LLPunchManager"]
+
+#define isEmptyStr(str) (!str||[str isKindOfClass:[NSNull class]]||[[str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] isEqualToString:@""]) /*判断是否空字符串*/
+
 @interface LLPunchManager : NSObject
+
+@property (nonatomic, copy) NSString *defaultConfigFileName; //默认配置文件名
 
 @property (nonatomic, strong) LLPunchConfig *punchConfig; //打卡配置
 

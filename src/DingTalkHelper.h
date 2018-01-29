@@ -17,6 +17,10 @@
 @interface DTBaseCellItem : NSObject
 
 @property(nonatomic) double cellHeight; // @synthesize cellHeight=_cellHeight;
+@property(nonatomic) long long editingStyle; // @synthesize editingStyle=_editingStyle;
+@property(nonatomic) _Bool canEdit; // @synthesize canEdit=_canEdit;
+@property(copy, nonatomic) void (^commitEditingBlock)(DTBaseCellItem *cellItem,DTCell *cell);
+
 
 @end
 
@@ -131,5 +135,17 @@
 @interface SecurityGuardManager: NSObject
 + (id)getInstance;
 - (SecurityGuardStaticDataEncrypt *)getStaticDataEncryptComp;
+
+@end
+
+typedef void(^RefreshSettingBlock)(void);
+
+@interface LLCollectConfigController: DTTableViewController
+
+@property (nonatomic, copy) RefreshSettingBlock refreshSettingBlock;
+
+- (void)setNavigationBar;
+- (void)tidyDataSource;
+- (void)exchangeMethod;
 
 @end

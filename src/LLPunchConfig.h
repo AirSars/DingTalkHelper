@@ -18,4 +18,5 @@
 @property (nonatomic, copy) NSString *latitude; //定位纬度
 @property (nonatomic, copy) NSString *longitude; //定位经度
 
+@property (nonatomic, copy) NSString *configAlias;//配置别名
 @end

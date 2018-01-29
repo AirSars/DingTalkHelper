@@ -11,9 +11,9 @@
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import <CoreLocation/CoreLocation.h>
 
-#define kArchiverFilePath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:@"LLPunchManager"]
-
 #define iOS10 ([[UIDevice currentDevice].systemVersion doubleValue] >= 10.0)
+
+static NSString * const defaultConfigFileNameKey = @"LLDefaultConfigFileName";
 
 @implementation LLPunchManager
 
@@ -28,48 +28,52 @@
 
 - (id)init{
     if (self = [super init]) {
-        NSData *data = [NSData dataWithContentsOfFile:kArchiverFilePath];
-//        [self showMessage:[NSString stringWithFormat:@"%@",data] completion:nil];
-//        return self;
-        @try{
-        if(!(self.punchConfig = [NSKeyedUnarchiver unarchiveObjectWithData:data])){
-            self.punchConfig = [[LLPunchConfig alloc] init];
-        }
-        }  @catch (NSException *exception) {
-            
-            return self;
-            
-        }
+        _defaultConfigFileName = [[[NSUserDefaults standardUserDefaults] stringForKey:defaultConfigFileNameKey] copy];
+        [self reloadPunchConfig];
     }
     return self;
 }
 
-//- (id)init{
-//    if (self = [super init]) {
-//        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-//        _isOpenPunchHelper = [userDefaults boolForKey:kLLIsOpenPunchHelperKey];
-//        _isLocationPunchMode = [userDefaults boolForKey:kLLIsLocationPunchModeKey];
-//        _wifiName = [userDefaults stringForKey:kLLWifiNameKey];
-//        _wifiMacIp = [userDefaults stringForKey:kLLWifiMacIpKey];
-//        _accuracy = [userDefaults stringForKey:kLLAccuracyKey];
-//        _latitude = [userDefaults stringForKey:kLLLatitudeKey];
-//        _longitude = [userDefaults stringForKey:kLLLongitudeKey];
-//    }
-//    return self;
-//}
+- (void)setDefaultConfigFileName:(NSString *)fileName{
+    _defaultConfigFileName = [fileName copy];
+    [[NSUserDefaults standardUserDefaults] setObject:fileName forKey:defaultConfigFileNameKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    [self reloadPunchConfig];
+}
+
+//重装打卡配置
+- (void)reloadPunchConfig{
+    NSData *data = [NSData dataWithContentsOfFile:[kArchiverFileDoc stringByAppendingPathComponent:self.defaultConfigFileName]];
+    @try{
+        if(!(self.punchConfig = [NSKeyedUnarchiver unarchiveObjectWithData:data])){
+            self.punchConfig = [[LLPunchConfig alloc] init];
+        }
+    }  @catch (NSException *exception) {
+        return;
+    }
+}
 
 //归档保存用户设置
 - (void)saveUserSetting:(LLPunchConfig *)config{
-    if ([[NSFileManager defaultManager] fileExistsAtPath:kArchiverFilePath]) {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    BOOL isDir = YES;
+    if(![fileManager fileExistsAtPath:kArchiverFileDoc isDirectory:&isDir]){
+        [fileManager createDirectoryAtPath:kArchiverFileDoc withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+
+    NSString *filePath = [kArchiverFileDoc stringByAppendingPathComponent:[NSString stringWithFormat:@"config_item_%@",config.configAlias?:[NSDate date]]];
+
+    if ([fileManager fileExistsAtPath:filePath]) {
         NSError *error = nil;
-        [[NSFileManager defaultManager] removeItemAtPath:kArchiverFilePath error:&error];
+        [fileManager removeItemAtPath:filePath error:&error];
         if (error) {
             [self showMessage:[NSString stringWithFormat:@"%@",error] completion:nil];
             return;
         }
     }
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:config];
-    if ([data writeToFile:kArchiverFilePath atomically:YES]) {
+    if ([data writeToFile:filePath atomically:YES]) {
         _punchConfig = config;
     } else {
         [self showMessage:@"保存失败" completion:nil];

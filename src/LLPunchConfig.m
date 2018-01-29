@@ -15,6 +15,7 @@ static NSString * const kLLWifiMacIpKey = @"LLWifiMacIp";
 static NSString * const kLLAccuracyKey = @"LLAccuracy";
 static NSString * const kLLLatitudeKey = @"LLLatitude";
 static NSString * const kLLLongitudeKey = @"LLLongitude";
+static NSString * const kLLConfigAlias = @"LLConfigAlias";
 
 @implementation LLPunchConfig
 
@@ -28,6 +29,7 @@ static NSString * const kLLLongitudeKey = @"LLLongitude";
         _accuracy = [[coder decodeObjectForKey:kLLAccuracyKey] copy];
         _latitude = [[coder decodeObjectForKey:kLLLatitudeKey] copy];
         _longitude = [[coder decodeObjectForKey:kLLLongitudeKey] copy];
+        _configAlias = [[coder decodeObjectForKey:kLLConfigAlias] copy];
     }
     return self;
 }
@@ -41,6 +43,7 @@ static NSString * const kLLLongitudeKey = @"LLLongitude";
     [coder encodeObject:_accuracy forKey:kLLAccuracyKey];
     [coder encodeObject:_latitude forKey:kLLLatitudeKey];
     [coder encodeObject:_longitude forKey:kLLLongitudeKey];
+    [coder encodeObject:_configAlias forKey:kLLConfigAlias];
 }
 
 - (id)copyWithZone:(nullable NSZone *)zone{
@@ -52,6 +55,7 @@ static NSString * const kLLLongitudeKey = @"LLLongitude";
     config.accuracy = self.accuracy;
     config.latitude = self.latitude;
     config.longitude = self.longitude;
+    config.configAlias = self.configAlias;
     return config;
 }
 

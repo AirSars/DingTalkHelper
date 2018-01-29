@@ -22,8 +22,8 @@
                 @"errorMessage": @"",
                 @"keep": @"0",
                 @"result": @{
-                    @"macIp": [LLPunchManager shared].punchConfig.wifiMacIp,
-                    @"ssid": [LLPunchManager shared].punchConfig.wifiName
+                    @"macIp": [LLPunchManager shared].punchConfig.wifiMacIp?:@"",
+                    @"ssid": [LLPunchManager shared].punchConfig.wifiName?:@""
                 }
             };
             arg3(![LLPunchManager shared].punchConfig.isLocationPunchMode ? retDic : dic);
@@ -37,9 +37,9 @@
                 @"keep": @"1",
                 @"result": @{
                     @"aMapCode": @"0",
-                    @"accuracy": [LLPunchManager shared].punchConfig.accuracy,
-                    @"latitude": [LLPunchManager shared].punchConfig.latitude,
-                    @"longitude": [LLPunchManager shared].punchConfig.longitude,
+                    @"accuracy": [LLPunchManager shared].punchConfig.accuracy?:@"",
+                    @"latitude": [LLPunchManager shared].punchConfig.latitude?:@"",
+                    @"longitude": [LLPunchManager shared].punchConfig.longitude?:@"",
                     @"netType": @"",
                     @"operatorType": @"unknown",
                     @"resultCode": @"0",
@@ -107,14 +107,19 @@
 - (void)tidyDataSource{
     NSMutableArray <DTSectionItem *> *sectionItems = [NSMutableArray array];
     
-    DTCellItem *configSelItem = [NSClassFromString(@"DTCellItem") cellItemForDefaultStyleWithIcon:nil title:@"选择历史配置" image:nil showIndicator:YES cellDidSelectedBlock:^{
-
+    DTCellItem *configSelItem = [NSClassFromString(@"DTCellItem") cellItemForDefaultStyleWithIcon:nil title:@"使用收藏配置" image:nil showIndicator:YES cellDidSelectedBlock:^{
+    	LLCollectConfigController *collectConfigVC = [[NSClassFromString(@"LLCollectConfigController") alloc] init];
+        collectConfigVC.refreshSettingBlock = ^{
+            self.punchConfig = [[LLPunchManager shared].punchConfig copy];
+            [self tidyDataSource];
+        };
+    	[self.navigationController pushViewController:collectConfigVC animated:YES];
     }];
 
-    DTCellItem *aliasItem = [NSClassFromString(@"DTCellItem") cellItemForEditStyleWithTitle:@"配置别名：" textFieldHint:@"请输入配置别名：" textFieldLimt:NSIntegerMax textFieldHelpBtnNormalImage:nil textFieldHelpBtnHighLightImage:nil textFieldDidChangeEditingBlock:^(DTCellItem *item,DTCell *cell,UITextField *textField){
-
+    DTCellItem *aliasItem = [NSClassFromString(@"DTCellItem") cellItemForEditStyleWithTitle:@"配置别名：" textFieldHint:@"请输入配置别名" textFieldLimt:NSIntegerMax textFieldHelpBtnNormalImage:nil textFieldHelpBtnHighLightImage:nil textFieldDidChangeEditingBlock:^(DTCellItem *item,DTCell *cell,UITextField *textField){
+        self.punchConfig.configAlias = textField.text;
     }];
-    aliasItem.textFieldText = @"";
+    aliasItem.textFieldText = self.punchConfig.configAlias;
     DTSectionItem *aliasSectionItem = [NSClassFromString(@"DTSectionItem") itemWithSectionHeader:nil sectionFooter:nil];
     aliasSectionItem.dataSource = @[configSelItem,aliasItem];
     [sectionItems addObject:aliasSectionItem];
@@ -200,12 +205,18 @@
     recognizeSectionItem.dataSource = @[locationCellItem,wifiCellItem];
     [sectionItems addObject:recognizeSectionItem];
 
-    DTCellItem *saveCellItem = [NSClassFromString(@"DTCellItem") cellItemForTitleOnlyStyleWithTitle:@"保存" cellDidSelectedBlock:^{
+    DTCellItem *addToCollectItem = [NSClassFromString(@"DTCellItem") cellItemForTitleOnlyStyleWithTitle:@"添加到收藏" cellDidSelectedBlock:^{
+        if(isEmptyStr(self.punchConfig.configAlias)){
+            self.punchConfig.configAlias = [[NSDate date] description];
+        }
         [[LLPunchManager shared] saveUserSetting:self.punchConfig];
+    }];
+    DTCellItem *saveCellItem = [NSClassFromString(@"DTCellItem")cellItemForTitleOnlyStyleWithTitle:@"保存" cellDidSelectedBlock:^{
+        [LLPunchManager shared].punchConfig = self.punchConfig;
         [self.navigationController popViewControllerAnimated:YES];
     }];
     DTSectionItem *saveSectionItem = [NSClassFromString(@"DTSectionItem") itemWithSectionHeader:nil sectionFooter:nil];
-    saveSectionItem.dataSource = @[saveCellItem];
+    saveSectionItem.dataSource = @[addToCollectItem,saveCellItem];
     [sectionItems addObject:saveSectionItem];
     
     DTTableViewDataSource *dataSource = [[NSClassFromString(@"DTTableViewDataSource") alloc] init];
@@ -235,3 +246,4 @@
 }
 
 %end
+
