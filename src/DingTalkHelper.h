@@ -83,9 +83,16 @@
 
 @end
 
+@interface LLSettingController : DTTableViewController
+
+- (void)setNavigationBar;
+- (void)tidyDataSource;
+
+@end
+
 @class LLPunchConfig,AMapLocationManager;
 
-@interface LLSettingController : DTTableViewController
+@interface LLPunchSettingController : DTTableViewController
 
 @property (nonatomic, retain) AMapLocationManager *locationManager;
 @property (nonatomic, retain) LLPunchConfig *punchConfig;
@@ -147,5 +154,24 @@ typedef void(^RefreshSettingBlock)(void);
 - (void)setNavigationBar;
 - (void)tidyDataSource;
 - (void)exchangeMethod;
+
+@end
+
+@interface DTWebViewController : UIViewController
+
++ (id)createPageViewControllerWithString:(id)arg1 relativeToURL:(id)arg2;
+
+@end
+
+@interface UIImageView (SDWebImage)
+
+- (void)sd_setImageWithURL:(NSURL *)url;
+
+@end 
+
+@interface LLRewardController : UIViewController
+
+- (void)setNavigationBar;
+- (void)setupUI;
 
 @end

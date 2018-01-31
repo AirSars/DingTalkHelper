@@ -32,3 +32,9 @@ ipa百度网盘[下载链接](https://pan.baidu.com/s/1qZbHbQW)  密码: 83en </
 
 如果觉得有用，欢迎star</br>
 如果使用发现问题，欢迎issue
+
+## 支持作者
+
+开发插件占用了我个人大量的私人时间，如果你觉得对你有所帮助，不妨请我喝杯☕️以鼓励我开发出更优秀的插件</br></br>
+<img src="https://github.com/kevll/WeChatRedEnvelopesHelper/blob/master/screenshots/wechatpay.png" height="300" hspace="20" /> </br>
+<img src="https://github.com/kevll/WeChatRedEnvelopesHelper/blob/master/screenshots/alipay.png" height="300" hspace="20" />

@@ -16,7 +16,7 @@
 
 %new
 - (void)setNavigationBar{
-    self.title = @"历史配置";
+    self.title = @"收藏配置";
     self.view.backgroundColor = [UIColor whiteColor];
 }
 
@@ -56,7 +56,7 @@
         }
     }
 
-    DTSectionItem *sectionItem = [NSClassFromString(@"DTSectionItem") itemWithSectionHeader:nil sectionFooter:nil];
+    DTSectionItem *sectionItem = [NSClassFromString(@"DTSectionItem") itemWithSectionHeader:nil sectionFooter:cellItems.count?@"点选切换配置，左滑可删除配置":@"暂无收藏配置,请先返回上一页添加配置到收藏"];
     sectionItem.dataSource = cellItems;
     
     DTTableViewDataSource *dataSource = [[NSClassFromString(@"DTTableViewDataSource") alloc] init];
