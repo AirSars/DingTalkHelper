@@ -175,3 +175,10 @@ typedef void(^RefreshSettingBlock)(void);
 - (void)setupUI;
 
 @end
+
+@interface LLReplacePhotoSettingController : DTTableViewController
+
+- (void)setNavigationBar;
+- (void)tidyDataSource;
+
+@end

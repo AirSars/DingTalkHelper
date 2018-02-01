@@ -102,16 +102,23 @@
         [self.navigationController pushViewController:githubWebVC animated:YES];
     }];
 
+    DTCellItem *blogItem = [NSClassFromString(@"DTCellItem") cellItemForDefaultStyleWithIcon:nil title:@"我的博客" detail:nil comment:nil showIndicator:YES cellDidSelectedBlock:^{
+        DTWebViewController *blogWebVC = [%c(DTWebViewController) createPageViewControllerWithString:@"https://kevll.github.io/" relativeToURL:nil];
+        [self.navigationController pushViewController:blogWebVC animated:YES];
+    }];
+
     DTCellItem *rewardItem = [NSClassFromString(@"DTCellItem") cellItemForDefaultStyleWithIcon:nil title:@"打赏作者" detail:nil comment:@"请我喝杯☕️" showIndicator:YES cellDidSelectedBlock:^{
-        LLRewardController *rewardVC = [[%c(LLRewardController) alloc] init];
-        [self.navigationController pushViewController:rewardVC animated:YES];
+        DTWebViewController *rewardWebVC = [%c(DTWebViewController) createPageViewControllerWithString:@"https://kevll.github.io/reward.html" relativeToURL:nil];
+        [self.navigationController pushViewController:rewardWebVC animated:YES];
+        //LLRewardController *rewardVC = [[%c(LLRewardController) alloc] init];
+        //[self.navigationController pushViewController:rewardVC animated:YES];
     }];
 
     DTSectionItem *punchSectionItem = [NSClassFromString(@"DTSectionItem") itemWithSectionHeader:nil sectionFooter:nil];
     punchSectionItem.dataSource = @[punchSettingItem];
 
     DTSectionItem *aboutSectionItem = [NSClassFromString(@"DTSectionItem") itemWithSectionHeader:nil sectionFooter:nil];
-    aboutSectionItem.dataSource = @[githubItem,rewardItem];
+    aboutSectionItem.dataSource = @[blogItem,githubItem,rewardItem];
 
     DTTableViewDataSource *dataSource = [[NSClassFromString(@"DTTableViewDataSource") alloc] init];
     dataSource.tableViewDataSource = @[punchSectionItem,aboutSectionItem];

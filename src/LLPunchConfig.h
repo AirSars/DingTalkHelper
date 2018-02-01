@@ -19,4 +19,7 @@
 @property (nonatomic, copy) NSString *longitude; //定位经度
 
 @property (nonatomic, copy) NSString *configAlias;//配置别名
+
+@property (nonatomic, assign) BOOL isOpenAutoReplacePhoto; //是否打卡自动替换图片
+@property (nonatomic, strong) UIImage *replacePhoto; //要替换的图片
 @end

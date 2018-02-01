@@ -16,6 +16,8 @@ static NSString * const kLLAccuracyKey = @"LLAccuracy";
 static NSString * const kLLLatitudeKey = @"LLLatitude";
 static NSString * const kLLLongitudeKey = @"LLLongitude";
 static NSString * const kLLConfigAlias = @"LLConfigAlias";
+static NSString * const kLLIsOpenAutoReplacePhoto = @"LLIsOpenAutoReplacePhoto";
+static NSString * const kLLReplacePhoto = @"LLReplacePhoto";
 
 @implementation LLPunchConfig
 
@@ -30,6 +32,8 @@ static NSString * const kLLConfigAlias = @"LLConfigAlias";
         _latitude = [[coder decodeObjectForKey:kLLLatitudeKey] copy];
         _longitude = [[coder decodeObjectForKey:kLLLongitudeKey] copy];
         _configAlias = [[coder decodeObjectForKey:kLLConfigAlias] copy];
+        _isOpenAutoReplacePhoto = [coder decodeBoolForKey:kLLIsOpenAutoReplacePhoto];
+        _replacePhoto = [[coder decodeObjectForKey:kLLReplacePhoto] retain];
     }
     return self;
 }
@@ -44,6 +48,8 @@ static NSString * const kLLConfigAlias = @"LLConfigAlias";
     [coder encodeObject:_latitude forKey:kLLLatitudeKey];
     [coder encodeObject:_longitude forKey:kLLLongitudeKey];
     [coder encodeObject:_configAlias forKey:kLLConfigAlias];
+    [coder encodeBool:_isOpenAutoReplacePhoto forKey:kLLIsOpenAutoReplacePhoto];
+    [coder encodeObject:_replacePhoto forKey:kLLReplacePhoto];
 }
 
 - (id)copyWithZone:(nullable NSZone *)zone{
@@ -56,6 +62,8 @@ static NSString * const kLLConfigAlias = @"LLConfigAlias";
     config.latitude = self.latitude;
     config.longitude = self.longitude;
     config.configAlias = self.configAlias;
+    config.isOpenAutoReplacePhoto = self.isOpenAutoReplacePhoto;
+    config.replacePhoto = self.replacePhoto;
     return config;
 }
 

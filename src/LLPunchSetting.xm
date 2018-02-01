@@ -99,6 +99,14 @@
         }
     }
     
+    DTCellItem *replacePhotoItem = [NSClassFromString(@"DTCellItem") cellItemForDefaultStyleWithIcon:nil title:@"替换打卡拍照图片" detail:nil comment:nil showIndicator:YES cellDidSelectedBlock:^{
+        LLReplacePhotoSettingController *replacePhotoVC = [[%c(LLReplacePhotoSettingController) alloc] init];
+        [self.navigationController pushViewController:replacePhotoVC animated:YES];
+    }];
+    DTSectionItem *replacePhotoSection = [NSClassFromString(@"DTSectionItem") itemWithSectionHeader:nil sectionFooter:nil];
+    replacePhotoSection.dataSource = @[replacePhotoItem];
+    [sectionItems addObject:replacePhotoSection];
+
     DTCellItem *locationCellItem = [NSClassFromString(@"DTCellItem") cellItemForTitleOnlyStyleWithTitle:@"开始定位" cellDidSelectedBlock:^{
         if(![[LLPunchManager shared] isLocationAuth]){
             [[LLPunchManager shared] showMessage:@"请先打开钉钉定位权限" completion:^(BOOL isClickConfirm){
