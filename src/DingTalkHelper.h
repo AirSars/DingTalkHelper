@@ -10,6 +10,27 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 
+@interface UIBarButtonItem (Factory)
+
++ (id)customBarButtonItemWithBgImage:(id)arg1 title:(id)arg2 target:(id)arg3 action:(SEL)arg4 color:(id)arg5;
++ (id)customBarButtonItemWithImage:(id)arg1 highImage:(id)arg2 target:(id)arg3 action:(SEL)arg4;
++ (id)customBarButtonItemWithImage:(id)arg1 target:(id)arg2 action:(SEL)arg3;
++ (id)customBarButtonItemWithIconFontConf:(id)arg1 target:(id)arg2 action:(SEL)arg3 badgeView:(id)arg4;
++ (id)customBarButtonItemWithIconFontConf:(id)arg1 target:(id)arg2 action:(SEL)arg3;
++ (id)customBarButtonItemWithIconFont:(long long)arg1 target:(id)arg2 action:(SEL)arg3 badgeView:(id)arg4;
++ (id)customBarButtonItemWithIconFont:(long long)arg1 target:(id)arg2 action:(SEL)arg3 color:(id)arg4;
++ (id)customBarButtonItemWithIconFont:(long long)arg1 target:(id)arg2 action:(SEL)arg3;
++ (id)barButtonItemWithTitle:(id)arg1 tappedCallback:(id)arg2;
++ (id)barButtonItemWithTitle:(id)arg1 target:(id)arg2 action:(SEL)arg3 color:(id)arg4 badge:(id)arg5;
++ (id)barButtonItemWithTitle:(id)arg1 target:(id)arg2 action:(SEL)arg3 badge:(id)arg4;
++ (id)barButtonItemWithTitle:(id)arg1 target:(id)arg2 action:(SEL)arg3 color:(id)arg4;
++ (id)barButtonItemWithTitle:(id)arg1 target:(id)arg2 action:(SEL)arg3;
++ (void)dt_updateBackButton:(id)arg1 withTitle:(id)arg2 color:(id)arg3;
++ (id)backBarButtonItemWithTitle:(id)arg1 tintColor:(id)arg2 target:(id)arg3 action:(SEL)arg4;
++ (id)backBarButtonItemWithTitle:(id)arg1 target:(id)arg2 action:(SEL)arg3;
+
+@end
+
 @interface DTCell : UITableViewCell
 
 @end
@@ -167,16 +188,16 @@ typedef void(^RefreshSettingBlock)(void);
 
 - (void)sd_setImageWithURL:(NSURL *)url;
 
-@end 
-
-@interface LLRewardController : UIViewController
-
-- (void)setNavigationBar;
-- (void)setupUI;
-
 @end
 
+typedef void(^ReplacePhotoCallback)(BOOL isOpenReplacePhoto,UIImage *replacePhoto);
+
 @interface LLReplacePhotoSettingController : DTTableViewController
+
+@property (nonatomic, assign) BOOL isOpenReplacePhoto;
+@property (nonatomic, retain) UIImage *replacePhoto;
+
+@property (nonatomic, copy) ReplacePhotoCallback replacePhotoCallback;
 
 - (void)setNavigationBar;
 - (void)tidyDataSource;

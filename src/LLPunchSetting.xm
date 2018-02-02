@@ -99,8 +99,16 @@
         }
     }
     
-    DTCellItem *replacePhotoItem = [NSClassFromString(@"DTCellItem") cellItemForDefaultStyleWithIcon:nil title:@"替换打卡拍照图片" detail:nil comment:nil showIndicator:YES cellDidSelectedBlock:^{
+    DTCellItem *replacePhotoItem = [NSClassFromString(@"DTCellItem") cellItemForDefaultStyleWithIcon:nil title:@"替换打卡拍照图片" detail:nil comment:self.punchConfig.replacePhoto?@"已设置":@"未设置" showIndicator:YES cellDidSelectedBlock:^{
         LLReplacePhotoSettingController *replacePhotoVC = [[%c(LLReplacePhotoSettingController) alloc] init];
+        replacePhotoVC.isOpenReplacePhoto = self.punchConfig.isOpenAutoReplacePhoto;
+        replacePhotoVC.replacePhoto = self.punchConfig.replacePhoto;
+        replacePhotoVC.replacePhotoCallback = ^(BOOL isOpenReplacePhoto,UIImage *replaceImage){
+            self.punchConfig.isOpenAutoReplacePhoto = isOpenReplacePhoto;
+            self.punchConfig.replacePhoto = replaceImage;
+            //刷新页面
+            [self tidyDataSource];
+        };
         [self.navigationController pushViewController:replacePhotoVC animated:YES];
     }];
     DTSectionItem *replacePhotoSection = [NSClassFromString(@"DTSectionItem") itemWithSectionHeader:nil sectionFooter:nil];
@@ -140,7 +148,7 @@
     recognizeSectionItem.dataSource = @[locationCellItem,wifiCellItem];
     [sectionItems addObject:recognizeSectionItem];
 
-    DTCellItem *addToCollectItem = [NSClassFromString(@"DTCellItem") cellItemForTitleOnlyStyleWithTitle:@"添加到收藏" cellDidSelectedBlock:^{
+    DTCellItem *addToCollectItem = [NSClassFromString(@"DTCellItem") cellItemForTitleOnlyStyleWithTitle:@"收藏配置" cellDidSelectedBlock:^{
         if(isEmptyStr(self.punchConfig.configAlias)){
             self.punchConfig.configAlias = [[NSDate date] description];
         }
